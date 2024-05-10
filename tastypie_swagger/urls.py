@@ -1,7 +1,7 @@
 from .views import SwaggerView, ResourcesView, SchemaView
 from tastypie_swagger.views import SwaggerSpecs2View
 
-from django.conf.urls import url
+from django.urls import re_path as url
 
 urlpatterns = [
     url(r'^$', SwaggerView.as_view(), name='index'),

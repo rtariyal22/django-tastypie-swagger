@@ -1,10 +1,11 @@
 import datetime
 import logging
 
+# adapted from https://stackoverflow.com/a/77418566/890242
 try:
     from django.utils.encoding import force_text
 except ImportError:
-    from django.utils.encoding import force_text as force_text
+    from django.utils.encoding import force_str as force_text
 
 from tastypie import fields
 from .utils import trailing_slash_or_none, urljoin_forced
