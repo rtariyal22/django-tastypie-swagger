@@ -206,6 +206,8 @@ class ResourceSwaggerMapping(object):
                         if field == ALL:
                             has_related_resource = False
                         else:
+                            if name not in self.resource.fields:
+                                continue
                             has_related_resource = hasattr(self.resource.fields[name], 'get_related_resource')
 
                         if not has_related_resource:
@@ -370,6 +372,8 @@ class ResourceSwaggerMapping(object):
                                    '{%s}%s' % (self._detail_uri_name(), trailing_slash_or_none())),
             'operations': [],
         }
+        if not self.schema['allowed_detail_http_methods']:
+            return detail_api
 
         if 'get' in self.schema['allowed_detail_http_methods']:
             detail_api['operations'].append(self.build_detail_operation(method='get'))
@@ -389,6 +393,8 @@ class ResourceSwaggerMapping(object):
             'path': self.get_resource_base_uri(),
             'operations': [],
         }
+        if not self.schema['allowed_list_http_methods']:
+            return list_api
 
         if 'get' in self.schema['allowed_list_http_methods']:
             list_api['operations'].append(self.build_list_operation(method='get'))
@@ -539,6 +545,9 @@ class ResourceSwaggerMapping(object):
     def build_models(self):
         # TODO this should be extended to allow the creation of a custom objects for extra_actions.
         models = {}
+
+        if not self.schema['allowed_list_http_methods']:
+            return models
 
         # Take care of the list particular schema with meta and so on.
         if 'get' in self.schema['allowed_list_http_methods']:

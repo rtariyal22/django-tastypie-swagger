@@ -165,6 +165,8 @@ class ResourceSwagger2Mapping(ResourceSwaggerMapping):
         def recurse(prop):
             if isinstance(prop, dict):
                 kind = prop.get('type')
+                if isinstance(kind, dict):
+                    return
                 if kind in models:
                     prop['type'] = 'object'
                     prop['$ref'] = self.get_model_ref(kind)
